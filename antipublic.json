@@ -25,7 +25,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/CountLines"
+                  "$ref": "#/components/schemas/Response_CountLines"
                 }
               }
             }
@@ -47,7 +47,7 @@
             "content": {
               "text/plain": {
                 "schema": {
-                  "$ref": "#/components/schemas/CountLinesPlain"
+                  "$ref": "#/components/schemas/Response_CountLinesPlain"
                 }
               }
             }
@@ -69,7 +69,14 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/CheckAccess"
+                  "allOf": [
+                    {
+                      "$ref": "#/components/schemas/Response_Success"
+                    },
+                    {
+                      "$ref": "#/components/schemas/Response_CheckAccess"
+                    }
+                  ]
                 }
               }
             }
@@ -79,7 +86,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/IncorrectKey"
+                  "$ref": "#/components/schemas/Response_IncorrectKey"
                 }
               }
             }
@@ -97,7 +104,7 @@
         "tags": [
           "Account"
         ],
-        "summary": "Get Available Queries",
+        "summary": "Available Queries",
         "description": "Get your available queries.",
         "operationId": "License.AvailableQueries",
         "responses": {
@@ -106,7 +113,14 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/AvailableQueries"
+                  "allOf": [
+                    {
+                      "$ref": "#/components/schemas/Response_Success"
+                    },
+                    {
+                      "$ref": "#/components/schemas/AvailableQueries"
+                    }
+                  ]
                 }
               }
             }
@@ -116,7 +130,42 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/IncorrectKey"
+                  "$ref": "#/components/schemas/Response_IncorrectKey"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "AntiPublic": []
+          }
+        ]
+      }
+    },
+    "/debug": {
+      "get": {
+        "tags": [
+          "Account"
+        ],
+        "summary": "Threads usage debug",
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Response_Debug"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Error response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Response_IncorrectKey"
                 }
               }
             }
@@ -169,7 +218,14 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/CheckLines"
+                  "allOf": [
+                    {
+                      "$ref": "#/components/schemas/Response_Success"
+                    },
+                    {
+                      "$ref": "#/components/schemas/Response_CheckLines"
+                    }
+                  ]
                 }
               }
             }
@@ -179,7 +235,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/IncorrectKey"
+                  "$ref": "#/components/schemas/Response_IncorrectKey"
                 }
               }
             }
@@ -214,7 +270,7 @@
                     "description": "Search type.\n\nSearch Priority:\n- **searchBy: email** - `email`, then `password`.\n- **searchBy: password** - `password`, then `email`.\n- **searchBy: domain** - `domain`, then `email`, then `password`.",
                     "title": "Search type.",
                     "type": "string",
-                    "default": "email",
+                    "example": "email",
                     "enum": [
                       "email",
                       "password",
@@ -282,7 +338,14 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/EmailSearch"
+                  "allOf": [
+                    {
+                      "$ref": "#/components/schemas/Response_Success"
+                    },
+                    {
+                      "$ref": "#/components/schemas/Response_Search"
+                    }
+                  ]
                 }
               }
             }
@@ -292,7 +355,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/NoAccess"
+                  "$ref": "#/components/schemas/Response_NoAccess"
                 }
               }
             }
@@ -329,6 +392,10 @@
                       "type": "string"
                     }
                   },
+                  "onlyPassword": {
+                    "type": "boolean",
+                    "description": "Return only passwords, instead of lines with logins"
+                  },
                   "limit": {
                     "description": "Result limit (per email).",
                     "title": "Limit",
@@ -346,7 +413,14 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/EmailSearch"
+                  "allOf": [
+                    {
+                      "$ref": "#/components/schemas/Response_Success"
+                    },
+                    {
+                      "$ref": "#/components/schemas/Response_EmailPasswords"
+                    }
+                  ]
                 }
               }
             }
@@ -356,7 +430,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/NoAccess"
+                  "$ref": "#/components/schemas/Response_NoAccess"
                 }
               }
             }
@@ -372,7 +446,41 @@
   },
   "components": {
     "schemas": {
-      "CountLines": {
+      "Response_Success": {
+        "type": "object",
+        "properties": {
+          "success": {
+            "type": "boolean"
+          }
+        }
+      },
+      "Response_IncorrectKey": {
+        "type": "object",
+        "properties": {
+          "success": {
+            "type": "boolean",
+            "default": false
+          },
+          "error": {
+            "type": "string",
+            "default": "Некорректный ключ"
+          }
+        }
+      },
+      "Response_NoAccess": {
+        "type": "object",
+        "properties": {
+          "success": {
+            "type": "boolean",
+            "default": false
+          },
+          "error": {
+            "type": "string",
+            "default": "Отсутствует доступ"
+          }
+        }
+      },
+      "Response_CountLines": {
         "type": "object",
         "properties": {
           "count": {
@@ -398,107 +506,139 @@
           }
         }
       },
-      "CountLinesPlain": {
+      "Response_CountLinesPlain": {
         "type": "string"
       },
-      "CheckAccess": {
+      "Response_CheckAccess": {
         "type": "object",
         "properties": {
-          "success": {
-            "type": "boolean"
+          "userId": {
+            "type": "integer",
+            "description": "User id inside antipublic system"
           },
-          "plus": {
-            "type": "boolean"
+          "origin": {
+            "type": "object",
+            "properties": {
+              "source": {
+                "type": "string",
+                "default": "lzt-prod"
+              },
+              "id": {
+                "type": "integer"
+              }
+            }
           },
-          "trial": {
-            "type": "boolean",
-            "default": false
+          "subscription": {
+            "type": "object",
+            "properties": {
+              "type": {
+                "type": "string",
+                "enum": [
+                  "default",
+                  "plus",
+                  "premium"
+                ],
+                "example": "premium"
+              },
+              "duration": {
+                "type": "integer",
+                "example": 30
+              },
+              "validUntil": {
+                "type": "integer"
+              },
+              "activatedAt": {
+                "type": "integer"
+              },
+              "availableQueries": {
+                "$ref": "#/components/schemas/AvailableQueries",
+                "description": "Maximum count of queries available per subscription"
+              }
+            }
           },
-          "plus_expires": {
-            "type": "string",
-            "default": "0"
+          "threads": {
+            "$ref": "#/components/schemas/AvailableThreads"
           },
-          "trial_expires": {
-            "type": "string",
-            "default": "0"
+          "availableQueries": {
+            "$ref": "#/components/schemas/AvailableQueries",
+            "description": "Remaining count of queries"
+          },
+          "permissions": {
+            "type": "object",
+            "properties": {
+              "checkLines": {
+                "type": "object",
+                "properties": {
+                  "forceInsert": {
+                    "type": "boolean"
+                  }
+                }
+              },
+              "emailPasswords": {
+                "type": "object",
+                "properties": {
+                  "hasAccess": {
+                    "type": "boolean"
+                  }
+                }
+              },
+              "search": {
+                "type": "object",
+                "properties": {
+                  "usePages": {
+                    "type": "boolean"
+                  },
+                  "searchBy": {
+                    "type": "object",
+                    "properties": {
+                      "email": {
+                        "type": "boolean"
+                      },
+                      "password": {
+                        "type": "boolean"
+                      },
+                      "domain": {
+                        "type": "boolean"
+                      }
+                    }
+                  }
+                }
+              }
+            }
           }
         }
       },
-      "IncorrectKey": {
+      "Response_Debug": {
         "type": "object",
         "properties": {
-          "success": {
-            "type": "boolean",
-            "default": false
-          },
-          "error": {
-            "type": "string",
-            "default": "Некорректный ключ"
+          "threads": {
+            "$ref": "#/components/schemas/AvailableThreads"
           }
         }
       },
-      "AvailableQueries": {
+      "Response_CheckLines": {
         "type": "object",
         "properties": {
-          "success": {
-            "type": "boolean"
-          },
-          "emailSearch": {
-            "type": "integer"
-          },
-          "passwordSearch": {
-            "type": "integer"
-          }
-        }
-      },
-      "NoAccess": {
-        "type": "object",
-        "properties": {
-          "success": {
-            "type": "boolean",
-            "default": false
-          },
-          "error": {
-            "type": "string",
-            "default": "Отсутствует доступ"
-          }
-        }
-      },
-      "CheckLines": {
-        "type": "object",
-        "properties": {
-          "success": {
-            "type": "boolean",
-            "default": true
+          "availableQueries": {
+            "type": [
+              "integer",
+              "null"
+            ]
           },
           "result": {
             "type": "array",
             "items": {
               "$ref": "#/components/schemas/LineResult"
             }
+          },
+          "countLines": {
+            "type": "integer"
           }
         }
       },
-      "LineResult": {
+      "Response_Search": {
         "type": "object",
         "properties": {
-          "is_private": {
-            "type": "boolean",
-            "default": false
-          },
-          "line": {
-            "type": "string",
-            "default": "example@gmail.com:password"
-          }
-        }
-      },
-      "EmailSearch": {
-        "type": "object",
-        "properties": {
-          "success": {
-            "title": "Success",
-            "type": "boolean"
-          },
           "availableQueries": {
             "title": "Available queries",
             "type": "integer"
@@ -506,6 +646,14 @@
           "resultCount": {
             "title": "Result count",
             "type": "integer"
+          },
+          "maxCount": {
+            "type": [
+              "integer",
+              "null"
+            ],
+            "title": "Maximum count of result on all pages",
+            "description": "Available only when each `query` element related to `direction` is equal to `strict`"
           },
           "results": {
             "title": "Results",
@@ -545,6 +693,99 @@
           "results",
           "page"
         ]
+      },
+      "Response_EmailPasswords": {
+        "type": "object",
+        "properties": {
+          "availableQueries": {
+            "title": "Available queries",
+            "type": [
+              "integer",
+              "null"
+            ]
+          },
+          "resultCount": {
+            "title": "Result count",
+            "type": "integer"
+          },
+          "results": {
+            "title": "Results",
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          }
+        },
+        "required": [
+          "success",
+          "availableQueries",
+          "resultCount",
+          "results",
+          "page"
+        ]
+      },
+      "AvailableQueries": {
+        "type": "object",
+        "properties": {
+          "checkLines": {
+            "type": [
+              "integer",
+              "null"
+            ],
+            "default": null
+          },
+          "emailSearch": {
+            "type": [
+              "integer",
+              "null"
+            ]
+          },
+          "passwordSearch": {
+            "type": [
+              "integer",
+              "null"
+            ]
+          }
+        }
+      },
+      "AvailableThreads": {
+        "type": "object",
+        "properties": {
+          "checkLines": {
+            "type": [
+              "integer",
+              "null"
+            ],
+            "example": 1
+          },
+          "emailPasswords": {
+            "type": [
+              "integer",
+              "null"
+            ],
+            "example": 2
+          },
+          "search": {
+            "type": [
+              "integer",
+              "null"
+            ],
+            "example": 4
+          }
+        }
+      },
+      "LineResult": {
+        "type": "object",
+        "properties": {
+          "is_private": {
+            "type": "boolean",
+            "default": false
+          },
+          "line": {
+            "type": "string",
+            "default": "example@gmail.com:password"
+          }
+        }
       }
     },
     "securitySchemes": {
