@@ -55,28 +55,6 @@
         }
       }
     },
-    "/version": {
-      "get": {
-        "tags": [
-          "Info"
-        ],
-        "summary": "Check Updates",
-        "description": "Get current version etc.",
-        "operationId": "Public.Version",
-        "responses": {
-          "200": {
-            "description": "Successful response",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Version"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
     "/checkAccess": {
       "get": {
         "tags": [
@@ -422,24 +400,6 @@
       },
       "CountLinesPlain": {
         "type": "string"
-      },
-      "Version": {
-        "type": "object",
-        "properties": {
-          "filename": {
-            "type": "string",
-            "default": "AntiPublic.exe"
-          },
-          "version": {
-            "type": "string"
-          },
-          "changeLog": {
-            "type": "string"
-          },
-          "url": {
-            "type": "string"
-          }
-        }
       },
       "CheckAccess": {
         "type": "object",
