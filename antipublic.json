@@ -278,8 +278,7 @@
                     ]
                   },
                   "query": {
-                    "description": "Search query.",
-                    "title": "Search query.",
+                    "description": "Search query",
                     "type": "object",
                     "properties": {
                       "email": {
@@ -294,38 +293,76 @@
                     }
                   },
                   "direction": {
-                    "description": "Search direction.",
-                    "title": "Search direction.",
+                    "description": "Search direction\n\nTo use `all` - Premium required",
                     "type": "object",
                     "properties": {
                       "email": {
                         "type": "string",
                         "enum": [
+                          "all",
                           "start",
                           "strict"
-                        ]
+                        ],
+                        "default": "start"
                       },
                       "password": {
                         "type": "string",
                         "enum": [
+                          "all",
                           "start",
                           "strict"
-                        ]
+                        ],
+                        "default": "start"
                       },
                       "domain": {
                         "type": "string",
                         "enum": [
+                          "all",
                           "start",
                           "strict",
                           "end"
-                        ]
+                        ],
+                        "default": "start"
                       }
                     }
                   },
+                  "order": {
+                    "type": "string",
+                    "description": "[**Premium** subscription required]\n\nIf you specify DESC order, then most likely you will have a couple of results. Everything is fine and it should be. To get more results - you need to disable fuses by specifying `all` in `direction` for your query field. Or if the request field is `strict`, then specify `fromLastValueOfKey` equal to true.",
+                    "enum": [
+                      "asc",
+                      "desc"
+                    ],
+                    "default": "asc"
+                  },
+                  "fromLastValueOfKey": {
+                    "type": "boolean",
+                    "default": false,
+                    "description": "[**Premium** subscription required]\n\nWhen using this option and \"strict direction\" the starting position starts from the last value of the key.\n\nFor example, we have *email:pass1*, *email:pass2*, *email:pass3*. Then when setting `query` = email, `direction` = strict, `fromLastValueOfKey` = true the first result obtained will be `email:pass3`."
+                  },
+                  "groupBy": {
+                    "type": "string",
+                    "description": "[**Premium** subscription required]\n\nThis option allows you to remove \"duplicates\". Only the first found line corresponding to the grouping will be returned and will move on to the next value.",
+                    "enum": [
+                      "login@domain",
+                      "domain",
+                      "password"
+                    ]
+                  },
+                  "format": {
+                    "type": "string",
+                    "description": "The format of the returned results. Allows you to quickly leave the most necessary without post-processing. When used correctly together with `groupBy`, the execution time of a database search query can be accelerated by eliminating JOIN operations on the server.",
+                    "enum": [
+                      "login@domain:password",
+                      "login@domain",
+                      "login",
+                      "domain",
+                      "password"
+                    ]
+                  },
                   "pageToken": {
                     "type": "string",
-                    "title": "Page token",
-                    "description": "Page token."
+                    "description": "The page token that was returned in the previous request. The token will be considered invalid if any of the request parameters change."
                   }
                 }
               }
@@ -664,7 +701,10 @@
           },
           "page": {
             "title": "Page",
-            "type": ["object", "null"],
+            "type": [
+              "object",
+              "null"
+            ],
             "properties": {
               "totalResults": {
                 "title": "Total results",
