@@ -342,7 +342,7 @@
                   },
                   "groupBy": {
                     "type": "string",
-                    "description": "[**Premium** subscription required]\n\nThis option allows you to remove \"duplicates\". Only the first found line corresponding to the grouping will be returned and will move on to the next value.",
+                    "description": "[**Premium** subscription required]\n\nThis option allows you to remove \"duplicates\". Only the first found line corresponding to the grouping will be returned and will move on to the next value.\n\nCan be used in the following cases:\n- **searchBy: email** - `login@domain`.\n- **searchBy: password** - `password`.\n- **searchBy: domain** - `domain`, `login@domain`.",
                     "enum": [
                       "login@domain",
                       "domain",
