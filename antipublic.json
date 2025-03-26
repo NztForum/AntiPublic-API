@@ -664,7 +664,7 @@
           },
           "page": {
             "title": "Page",
-            "type": "object",
+            "type": ["object", "null"],
             "properties": {
               "totalResults": {
                 "title": "Total results",
@@ -678,21 +678,9 @@
                 "title": "Next page token",
                 "type": "string"
               }
-            },
-            "required": [
-              "totalResults",
-              "pageNumber",
-              "nextPageToken"
-            ]
+            }
           }
-        },
-        "required": [
-          "success",
-          "availableQueries",
-          "resultCount",
-          "results",
-          "page"
-        ]
+        }
       },
       "Response_EmailPasswords": {
         "type": "object",
@@ -715,14 +703,7 @@
               "type": "string"
             }
           }
-        },
-        "required": [
-          "success",
-          "availableQueries",
-          "resultCount",
-          "results",
-          "page"
-        ]
+        }
       },
       "AvailableQueries": {
         "type": "object",
