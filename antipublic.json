@@ -94,7 +94,7 @@
         },
         "security": [
           {
-            "AntiPublic": []
+            "AntiPublicBearerAuth": []
           }
         ]
       }
@@ -138,7 +138,7 @@
         },
         "security": [
           {
-            "AntiPublic": []
+            "AntiPublicBearerAuth": []
           }
         ]
       }
@@ -173,7 +173,7 @@
         },
         "security": [
           {
-            "AntiPublic": []
+            "AntiPublicBearerAuth": []
           }
         ]
       }
@@ -243,7 +243,7 @@
         },
         "security": [
           {
-            "AntiPublic": []
+            "AntiPublicBearerAuth": []
           }
         ]
       }
@@ -400,7 +400,7 @@
         },
         "security": [
           {
-            "AntiPublic": []
+            "AntiPublicBearerAuth": []
           }
         ]
       }
@@ -475,7 +475,7 @@
         },
         "security": [
           {
-            "AntiPublic": []
+            "AntiPublicBearerAuth": []
           }
         ]
       }
@@ -810,10 +810,10 @@
       }
     },
     "securitySchemes": {
-      "AntiPublic": {
-        "type": "apiKey",
-        "name": "key",
-        "in": "query"
+      "AntiPublicBearerAuth": {
+        "type": "http",
+        "scheme": "bearer",
+        "bearerFormat": "JWT"
       }
     }
   },
